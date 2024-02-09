@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Post</title>
+    <link rel="stylesheet" href="/CreatePost/CreatePost.css">
+</head>
+<body>
+    <header>
+        <a href="/AccountOverview/AccountOverview.html">
+            <img src="/Images/Logo.png" alt="Logo" id="logo">
+        </a>
+        <h1>Create a Post</h1>
+    </header>
+    <main>
+        <form>
+            <label for="postTitle">Title:</label>
+            <input type="text" id="postTitle" name="postTitle" required>
+            <br>
+            <label for="postContent">Post Content:</label>
+            <textarea id="postContent" name="postContent" rows="6" required></textarea>
+            <br>
+            <div id="imageContainer">
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage()">
+                <button type="button" class="deleteImageButton" onclick="deleteImage()">X</button>
+                <div id="imagePreview"></div>
+            </div>
+            <br>
+            <label for="tags">Tags:</label>
+            <div id="tagList"></div>
+            <input type="text" id="tags" name="tags">
+            <br>
+            <button type="button" onclick="addTag()">Add Tag</button>
+            <button type="submit">Submit Post</button>
+        </form>
+    </main>
+
+    <script>
+        function previewImage() {
+            var input = document.getElementById('image');
+            var preview = document.getElementById('imagePreview');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.innerHTML = '<img src="' + e.target.result + '" alt="Image Preview">';
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = '';
+            }
+        }
+
+        function deleteImage() {
+            var input = document.getElementById('image');
+            var preview = document.getElementById('imagePreview');
+            input.value = '';
+            preview.innerHTML = '';
+        }
+
+        function addTag() {
+            var tagInput = document.getElementById('tags');
+            var tagList = document.getElementById('tagList');
+
+            if (tagInput.value.trim() !== "") {
+                var tagDiv = document.createElement('div');
+                tagDiv.className = 'tag';
+                var tagText = document.createElement('span');
+                tagText.className = 'tag-text';
+                tagText.textContent = tagInput.value.trim();
+                var removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', function () {
+                    tagList.removeChild(tagDiv);
+                });
+
+                tagDiv.appendChild(tagText);
+                tagDiv.appendChild(removeButton);
+                tagList.appendChild(tagDiv);
+
+                tagInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>

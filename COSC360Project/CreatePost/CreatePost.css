@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+header {
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    position: relative;
+}
+
+#logo {
+    max-width: 100px; 
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+main {
+    margin: 20px 0;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input,
+textarea,
+button {
+    margin-bottom: 16px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+#imageContainer {
+    position: relative;
+}
+
+#imagePreview {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.deleteImageButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff5858;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
+#tagList {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.tag {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.tag-text {
+    margin-right: 5px;
+}
+
+#tags {
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
