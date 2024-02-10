@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Detail</title>
+    <link rel="stylesheet" href="/PostFurtherDetail/PostFurtherDetail.css">
+</head>
+<body>
+    <header>
+        <img src="/Images/Logo.png" alt="Logo" onclick="goToHomePage()">
+    </header>
+    <main>
+        <div class="post-container">
+            <div class="post">
+                <h2 class="post-title">Breaking: Lewis Hamilton has announced his signing with Ferrari In the 2025 F1 Season</h2>
+                <img class="post-image" src="/Images/LewisPost.jpeg" alt="Post Image">
+                <p class="post-content">Seven-time Formula One world champion Lewis Hamilton said that he's fulfilling a “childhood dream” 
+                    by joining Ferrari in 2025 in his first social media post since his sensational move away from Mercedes was announced on Thursday. 
+                    “It's been a crazy few days which have been filled with a whole range of emotions.</p>
+                <p class="post-info">Posted on: <span id="postDate">February 7, 2024 - 12:30 PM</span></p>
+                <div class="likes-dislikes">
+                    <button class="like-button" onclick="likePost()">👍 Like</button>
+                    <button class="dislike-button" onclick="dislikePost()">👎 Dislike</button>
+                </div>
+            </div>
+
+            <ul class="comments">
+                <li class="comment">
+                    <p class="comment-info">Commented on: <span class="comment-date">February 8, 2024 - 09:45 AM</span></p>
+                    <p class="comment-text">Great post! Thanks for sharing.</p>
+                </li>
+            </ul>
+
+            <div class="comment-form">
+                <label for="comment">Post a Comment:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+                <button onclick="postComment()">Post Comment</button>
+            </div>
+        </div>
+        <footer>
+            &copy; 2024 DS CSS. All rights reserved.
+        </footer>
+    </main>
+  
+
+    <script>
+        function likePost() {
+            alert("Liked the post!");
+        }
+
+        function dislikePost() {
+            alert("Disliked the post!");
+        }
+
+        function postComment() {
+            alert("Comment posted!");
+        }
+    </script>
+</body>
+</html>
