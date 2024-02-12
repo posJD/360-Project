@@ -26,8 +26,7 @@ Registration:
 - Provide necessary information like username, email, and password.
 - Verify the email address to activate the account. -
 Login: -
--
-Returning users will log in using their credentials.
+-Returning users will log in using their credentials.
 Implement secure authentication measures like password hashing.
 -
 User Profile:
