@@ -3,7 +3,9 @@
 COSC 360 Project Milestone 1
 
 Team
+
 Sina H. 86043593
+
 Prithvi Waraich 31466246
 
 Project Choice: MyDiscussionForum Website Layout Doc:
