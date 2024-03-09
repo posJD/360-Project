@@ -117,33 +117,31 @@
             <a href="#">About</a>
             <a href="#">Contact</a>
             <div class="search-bar">
-                <input type="text" placeholder="Search...">
-                <button>Search</button>
+                <input type="text" id="searchInput" placeholder="Search by tag...">
+                <button onclick="searchByTag()">Search</button>
             </div>
             <a href="create_account.html" id="create_account" target="_blank">Create Account</a>
             <a href="login.html" id="login" target="_blank">Login</a>
             <button class="help-button">Help</button>
         </nav>
     </header>
+    
 
     <main>
         <h2>Top Discussions</h2>
-        <div class="discussion">
+        <div class="discussion" data-tags="technology">
             <h2>Discussion Title 1</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus lectus sit amet leo fringilla
-                consectetur.</p>
+            <p>Discussion about technology</p>
         </div>
 
-        <div class="discussion">
+        <div class="discussion" data-tags="programming">
             <h2>Discussion Title 2</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus lectus sit amet leo fringilla
-                consectetur.</p>
+            <p>Discussion about programming</p>
         </div>
 
-        <div class="discussion">
+        <div class="discussion" data-tags="web-development">
             <h2>Discussion Title 3</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus lectus sit amet leo fringilla
-                consectetur.</p>
+            <p>Discussion about web development</p>
         </div>
 
 
@@ -157,6 +155,27 @@
             &copy; 2024 DS CSS. All rights reserved.
         </nav>
     </footer>
+    <script>
+        function searchByTag() {
+            
+            var searchQuery = document.getElementById("searchInput").value.toLowerCase();
+
+            
+            var discussions = document.querySelectorAll(".discussion");
+
+           
+            discussions.forEach(function(discussion) {
+                var tags = discussion.getAttribute("data-tags").toLowerCase();
+                
+                
+                if (tags.includes(searchQuery)) {
+                    discussion.style.display = "block";
+                } else {
+                    discussion.style.display = "none"; 
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
