@@ -17,6 +17,22 @@ if (!$user) {
     echo "Error: User data not found.";
     exit();
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['submit'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $username = $_POST['username'];
+        $dob = $_POST['dob'];
+        $bio = $_POST['bio'];
+
+        $updateStmt = $pdo->prepare("UPDATE User SET Name = :name, Email = :email, Username = :username, DOB = :dob, Bio = :bio WHERE UserId = :user_id");
+        $updateStmt->execute(['name' => $name, 'email' => $email, 'username' => $username, 'dob' => $dob, 'bio' => $bio, 'user_id' => $user_id]);
+
+        header("Location: account_overview.php");
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,10 +45,10 @@ if (!$user) {
 </head>
 <body>
     <header>
-        <a href="home_Page.html">
+        <a href="home_Page.php">
             <img src="Logo.png" alt="Logo">
         </a>
-        <a href="login.html">
+        <a href="login.php">
             <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
         </a>
     </header>
@@ -45,11 +61,36 @@ if (!$user) {
         <div class="profile-container">
             <img src="UserImage.jpeg" alt="Profile Image" class="profile-image">
             <div class="user-info">
-                <h2>Name: <?php echo htmlspecialchars($user['Name']); ?></h2>
-                <p>Username: <?php echo htmlspecialchars($user['Username']); ?></p>
-                <p>Email: <?php echo htmlspecialchars($user['Email']); ?></p>
-                <p>Date of Birth: <?php echo htmlspecialchars($user['DOB']); ?></p>
-                <p>Bio: <?php echo htmlspecialchars($user['Bio']); ?></p>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <h2>Name: 
+                        <input type="text" name="name" value="<?php echo htmlspecialchars($user['Name']); ?>">
+                        <button type="submit" name="submit">Save</button>
+                    </h2>
+                </form>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <p>Email: 
+                        <input type="email" name="email" value="<?php echo htmlspecialchars($user['Email']); ?>">
+                        <button type="submit" name="submit">Save</button>
+                    </p>
+                </form>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <p>Username: 
+                        <input type="text" name="username" value="<?php echo htmlspecialchars($user['Username']); ?>">
+                        <button type="submit" name="submit">Save</button>
+                    </p>
+                </form>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <p>Date of Birth: 
+                        <input type="date" name="dob" value="<?php echo htmlspecialchars($user['DOB']); ?>">
+                        <button type="submit" name="submit">Save</button>
+                    </p>
+                </form>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <p>Bio: 
+                        <textarea name="bio"><?php echo htmlspecialchars($user['Bio']); ?></textarea>
+                        <button type="submit" name="submit">Save</button>
+                    </p>
+                </form>
             </div>
         </div>
     </main>
