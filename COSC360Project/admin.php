@@ -1,3 +1,17 @@
+<?php
+require 'config.php'; 
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $stmt = $pdo->query("SELECT * FROM User");
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,15 +116,13 @@
             position: fixed;
             bottom: 0%;
             width: 100%;
-            
-            
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Admin Page</h1>
-        <button onclick="window.open('login.html', '_blank')" >Logout</button>
+        <button onclick="window.open('login.html', '_blank')">Logout</button>
     </header>
 
     <main>
@@ -128,23 +140,16 @@
                 </tr>
             </thead>
             <tbody>
-                
+                <?php foreach ($users as $user): ?>
                 <tr>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
+                    <td><?php echo $user['Name']; ?></td>
+                    <td><?php echo $user['Email']; ?></td>
                     <td class="user-actions">
                         <button class="enable-btn action-btn">Enable</button>
                         <button class="disable-btn action-btn">Disable</button>
                     </td>
                 </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>jane@example.com</td>
-                    <td class="user-actions">
-                        <button class="enable-btn action-btn">Enable</button>
-                        <button class="disable-btn action-btn">Disable</button>
-                    </td>
-                </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
