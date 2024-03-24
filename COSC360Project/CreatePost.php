@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 
-    header("Location: home_Page.html");
+    header("Location: home_Page.php");
     exit();
 }
 ?>
