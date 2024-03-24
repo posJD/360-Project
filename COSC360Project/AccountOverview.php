@@ -41,19 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <title>Account Overview</title>
     <link rel="stylesheet" href="AccountOverview.css">
     <script>
-        function toggleEditMode(inputId, editButtonId) {
-            var input = document.getElementById(inputId);
-            var editButton = document.getElementById(editButtonId);
+    function toggleEditMode(inputId, editButtonId) {
+        var input = document.getElementById(inputId);
+        var editButton = document.getElementById(editButtonId);
 
-            if (input.disabled) {
-                input.disabled = false;
-                editButton.innerHTML = "Done";
-            } else {
-                input.disabled = true;
-                editButton.innerHTML = "Edit";
-            }
+        if (input.disabled) {
+            input.disabled = false;
+            editButton.textContent = "Done"; 
+        } else {
+            input.disabled = true;
+            editButton.textContent = "Edit"; 
         }
-    </script>
+    }
+</script>
+
 </head>
 <body>
 <header>
