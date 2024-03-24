@@ -60,7 +60,7 @@
             }
         }
 
-        // Repeat similar edit functions for other fields (username, dob, bio)
+     //add later
     </script>
 </body>
 </html>
