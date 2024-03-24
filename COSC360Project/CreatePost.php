@@ -1,23 +1,44 @@
+<?php
+include 'config.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $stmt = $conn->prepare("INSERT INTO Threads (Title, Tags, Content, UserId) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $title, $tags, $content, $userId);
+
+    $title = $_POST["postTitle"];
+    $tags = $_POST["tags"];
+    $content = $_POST["postContent"];
+    $userId = 1; 
+
+    $stmt->execute();
+
+    $stmt->close();
+
+    header("Location: home_Page.html");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create a Post</title>
-    <link rel="stylesheet" href="/COSC360Project/CreatePost/CreatePost.css">
+    <link rel="stylesheet" href="CreatePost.css">
 </head>
 <body>
     <header>
-        <a href="/COSC360Project/home_Page.html">
-            <img src="/COSC360Project/Images/Logo.png" alt="Logo" id="logo">
+        <a href="home_Page.html">
+            <img src="Logo.png" alt="Logo" id="logo">
         </a>
-        <a href="/COSC360Project/login.html">
-            <img src="/COSC360Project/Images/UserImage.jpeg" alt="User Image" class="user-image-button">
+        <a href="login.html">
+            <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
         </a>
         <h1>Create a Post</h1>
     </header>
     <main>
-        <form>
+        <form method="post">
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>

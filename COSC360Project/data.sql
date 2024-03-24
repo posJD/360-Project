@@ -4,6 +4,7 @@ CREATE TABLE User (
     Email VARCHAR(255) NOT NULL,
     Username VARCHAR(50) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
+    Bio TEXT DEFAULT NULL,
     DOB DATE NOT NULL,
     ImageId INT,
     FOREIGN KEY (ImageId) REFERENCES Images(ImageId)
