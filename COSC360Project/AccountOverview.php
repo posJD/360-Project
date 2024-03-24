@@ -43,10 +43,13 @@ if (!$user) {
             <a href="#">Settings</a>
         </nav>
         <div class="profile-container">
-            <img src="/Images/UserImage.jpeg" alt="Profile Image" class="profile-image">
+            <img src="UserImage.jpeg" alt="Profile Image" class="profile-image">
             <div class="user-info">
-                <h2>Username: <?php echo $user['Username']; ?></h2>
-                <p>Bio: <?php echo $user['Bio']; ?></p>
+                <h2>Name: <?php echo htmlspecialchars($user['Name']); ?></h2>
+                <p>Username: <?php echo htmlspecialchars($user['Username']); ?></p>
+                <p>Email: <?php echo htmlspecialchars($user['Email']); ?></p>
+                <p>Date of Birth: <?php echo htmlspecialchars($user['DOB']); ?></p>
+                <p>Bio: <?php echo htmlspecialchars($user['Bio']); ?></p>
             </div>
         </div>
     </main>
