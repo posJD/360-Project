@@ -1,24 +1,40 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html");
+    exit();
+}
+
 include 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_SESSION['user_id'];
+    $post_content = $_POST['postContent'];
+    $tags = $_POST['tags'];
 
-    $stmt = $conn->prepare("INSERT INTO Threads (Title, Tags, Content, UserId) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $title, $tags, $content, $userId);
+    if ($_FILES['image']['size'] > 0) {
+        $img_content = file_get_contents($_FILES['image']['tmp_name']);
+        $img_username = $_SESSION['username'];
 
-    $title = $_POST["postTitle"];
-    $tags = $_POST["tags"];
-    $content = $_POST["postContent"];
-    $userId = 1; 
 
-    $stmt->execute();
+        $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile) VALUES (:username, :img_content)");
+        $stmt_img->execute(['username' => $img_username, 'img_content' => $img_content]);
+        $img_id = $pdo->lastInsertId();
+    } else {
+        $img_id = null;
+    }
 
-    $stmt->close();
+
+    $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Tags, Content, UserId, ImageId) VALUES (:title, :tags, :content, :user_id, :image_id)");
+    $stmt_thread->execute(['title' => $_POST['postTitle'], 'tags' => $tags, 'content' => $post_content, 'user_id' => $user_id, 'image_id' => $img_id]);
 
     header("Location: home_Page.php");
     exit();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,16 +45,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <a href="home_Page.html">
+        <a href="home_Page.php">
             <img src="Logo.png" alt="Logo" id="logo">
         </a>
-        <a href="login.html">
+        <a href="login.php">
             <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
         </a>
         <h1>Create a Post</h1>
     </header>
     <main>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>
@@ -59,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="button" onclick="addTag()">Add Tag</button>
             <button type="submit">Submit Post</button>
         </form>
+
     </main>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.
@@ -113,5 +130,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
+
 </body>
 </html>
