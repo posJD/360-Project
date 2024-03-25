@@ -5,15 +5,14 @@ $dbname = 'db_86043593';
 $username = '86043593';
 $password = '86043593';
 
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
 
+$error_message1 = $error_message2 = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = $_POST['firstName'];
@@ -23,14 +22,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $dob = $_POST['dob'];
 
-    if (strlen($password) < 8) {
-        $error_message1 = "Password must be at least 8 characters long.";
-    } else {
-        $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username");
-        $stmt->execute(['username' => $username]);
-        $existingUser = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($existingUser) {
-            $error_message2= "Username is already taken.";
+    $stmt = $pdo->prepare("SELECT * FROM User WHERE Email = :email");
+    $stmt->execute(['email' => $email]);
+    $existingEmail = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($existingEmail) {
+        $error_message1 = "Email is already registered.";
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username");
+    $stmt->execute(['username' => $username]);
+    $existingUsername = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($existingUsername) {
+        $error_message2 = "Username is already taken.";
+    }
+
+    if (!$existingEmail && !$existingUsername) {
+        if (strlen($password) < 8) {
+            $error_message1 = "Password must be at least 8 characters long.";
         } else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -43,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,20 +143,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-        
+
         <label for="password">Password:</label>
-        
         <input type="password" id="password" name="password" required>
-        <?php if(isset($error_message1)) { ?>
-            <div class="error-message"><?php echo $error_message; ?></div> 
-        <?php } ?>
 
         <label for="username">Username:</label>
-        
         <input type="text" id="username" name="username" required>
-        <?php if(isset($error_message2)) { ?>
-            <div class="error-message"><?php echo $error_message2; ?></div> 
-        <?php } ?>
 
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" name="dob" required>
