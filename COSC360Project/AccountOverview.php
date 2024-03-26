@@ -79,6 +79,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 </head>
 <body>
     <header>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+        </nav>
         <a href="home_Page.php">
             <img src="Logo.png" alt="Logo">
         </a>
@@ -87,11 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         </a>
     </header>
     <main>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Profile</a>
-            <a href="#">Settings</a>
-        </nav>
         <div class="profile-container">
             <img src="UserImage.jpeg" alt="Profile Image" class="profile-image">
             <div class="user-info">

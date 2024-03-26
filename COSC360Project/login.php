@@ -127,7 +127,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <img src="Logo.png" alt="Logo" id="logo">
+    <a href="home_Page.php">
+            <img src="Logo.png" alt="Logo">
+        </a>
     </header>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <h2>Login</h2>
