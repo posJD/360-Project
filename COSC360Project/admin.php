@@ -16,6 +16,9 @@ try {
     
     $stmt = $pdo->query("SELECT * FROM User");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->query("SELECT * FROM Threads ORDER BY Time DESC");
+    $threads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
@@ -49,7 +52,7 @@ try {
             padding: 20px;
         }
 
-        h1 {
+        h1, h2 {
             margin-top: 0;
         }
 
@@ -117,6 +120,7 @@ try {
             background-color: #3498db;
             color: white;
         }
+
         footer {
             background-color: #2c3e50;
             color: white;
@@ -125,6 +129,25 @@ try {
             position: fixed;
             bottom: 0%;
             width: 100%;
+        }
+
+        .thread-table {
+            margin-top: 20px;
+        }
+
+        .thread-table th, .thread-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .thread-table th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .thread-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -163,7 +186,28 @@ try {
         </table>
 
         <h2>Edit/Remove Posts</h2>
-        
+
+        <h2>All Threads (Sorted by Most Recent)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>User</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($threads as $thread): ?>
+                <tr>
+                    <td><?php echo $thread['Title']; ?></td>
+                    <td><?php echo $thread['Content']; ?></td>
+                    <td><?php echo $thread['UserId']; ?></td>
+                    <td><?php echo $thread['Time']; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </main>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.

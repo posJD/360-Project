@@ -67,19 +67,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Overview</title>
     <link rel="stylesheet" href="AccountOverview.css">
-    <script>
-        function toggleEditMode(inputId, editButtonId) {
-            var input = document.getElementById(inputId);
-            var editButton = document.getElementById(editButtonId);
+       <script>
+            function toggleEditMode(inputId, editButtonId) {
+                var input = document.getElementById(inputId);
+                var editButton = document.getElementById(editButtonId);
 
-            if (input.disabled) {
-                input.disabled = false;
-                editButton.textContent = "Done";
-            } else {
-                input.disabled = true;
-                editButton.textContent = "Edit";
+                if (input.disabled) {
+                    input.disabled = false;
+                    editButton.textContent = "Done";
+                } else {
+                    input.disabled = true;
+                    editButton.textContent = "Edit";
+                }
             }
-        }
+        </script>
+
     </script>
 </head>
 <body>
@@ -98,24 +100,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                     <h2>Name:
                         <input id="name" type="text" name="name" value="<?php echo htmlspecialchars($user['Name']); ?>" disabled>
-                        <button type="button" onclick="toggleEditMode('name', 'editName')">Edit</button>
+                        <button type="button" onclick="toggleEditMode('name', 'editNameText')">Edit</button>
                     </h2>
+                    <input type="hidden" name="original_name" value="<?php echo htmlspecialchars($user['Name']); ?>">
                     <p>Email:
                         <input id="email" type="email" name="email" value="<?php echo htmlspecialchars($user['Email']); ?>" disabled>
-                        <button type="button" onclick="toggleEditMode('email', 'editEmail')">Edit</button>
+                        <button type="button" onclick="toggleEditMode('email', 'editEmailText')">Edit</button>
                     </p>
+                    <input type="hidden" name="original_email" value="<?php echo htmlspecialchars($user['Email']); ?>">
                     <p>Username:
                         <input id="username" type="text" name="username" value="<?php echo htmlspecialchars($user['Username']); ?>" disabled>
-                        <button type="button" onclick="toggleEditMode('username', 'editUsername')">Edit</button>
+                        <button type="button" onclick="toggleEditMode('username', 'editUsernameText')">Edit</button>
                     </p>
+                    <input type="hidden" name="original_username" value="<?php echo htmlspecialchars($user['Username']); ?>">
                     <p>Date of Birth:
                         <input id="dob" type="date" name="dob" value="<?php echo htmlspecialchars($user['DOB']); ?>" disabled>
-                        <button type="button" onclick="toggleEditMode('dob', 'editDob')">Edit</button>
+                        <button type="button" onclick="toggleEditMode('dob', 'editDobdate')">Edit</button>
                     </p>
+                    <input type="hidden" name="original_dob" value="<?php echo htmlspecialchars($user['DOB']); ?>">
                     <p>Bio:
                         <textarea id="bio" name="bio" disabled><?php echo htmlspecialchars($user['Bio']); ?></textarea>
                         <button type="button" onclick="toggleEditMode('bio', 'editBio')">Edit</button>
-                    </p>
+                    </p>                
+                    <input type="hidden" name="original_bio" value="<?php echo htmlspecialchars($user['Bio']); ?>">
                     <p>
                         <input type="file" name="profile_image">
                         <button type="submit" name="submit">Update Profile</button>
