@@ -131,7 +131,7 @@ try {
 <body>
     <header>
         <h1>Admin Page</h1>
-        <button onclick="window.open('login.html', '_blank')">Logout</button>
+        <button onclick="window.open('login.php', '_blank')">Login</button>
     </header>
 
     <main>

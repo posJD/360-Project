@@ -121,7 +121,7 @@
                 <button onclick="searchByTag()">Search</button>
             </div>
             <a href="create_account.php" id="create_account">Create Account</a>
-            <a href="login.php" id="login">login</a>
+            <a href="login.php" id="login">Login</a>
             <a href="AccountOverview.php">
             <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
         </a>
