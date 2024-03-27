@@ -103,4 +103,18 @@ if (!$user) {
                         <textarea name="bio"><?php echo htmlspecialchars($user['Bio']); ?></textarea>
                     </p>
                     <p>
-                        <input type
+                    <input type="file" name="profile_image">
+                        <button type="submit" name="update_image">Update Image</button>
+                    </p>
+                    <p>
+                        <button type="submit" name="update_profile">Update Profile</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2024 DS CSS. All rights reserved.
+    </footer>
+</body>
+</html>
