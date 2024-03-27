@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2024 at 06:13 AM
+-- Generation Time: Mar 27, 2024 at 11:05 AM
 -- Server version: 5.5.68-MariaDB
 -- PHP Version: 7.4.33
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `DOB` date NOT NULL,
   `ImageId` int(11) DEFAULT NULL,
   `Bio` text
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `User`
@@ -115,7 +115,8 @@ CREATE TABLE IF NOT EXISTS `User` (
 
 INSERT INTO `User` (`UserId`, `Name`, `Email`, `Username`, `Password`, `DOB`, `ImageId`, `Bio`) VALUES
 (1, 'Prithvi', 'prithviwaraich@gmail.com', 'prithvi', 'password123', '2002-02-18', 1, NULL),
-(2, 'Sina', 'sina@gmail.com', 'sina', 'password1234', '2002-02-18', 2, 'Hey Im a Fourth Year Comp Sci Student at the University of British Columbia. I like games, computer and basketball.');
+(2, 'Sina', 'sina@gmail.com', 'sina', 'password1234', '2002-02-18', 2, 'Hey Im a Fourth Year Comp Sci Student at the University of British Columbia. I like games, computer and basketball.'),
+(3, 'Sina', 'SJnana@yahoo.ca', 'sinkid8', '$2y$10$L612J7NoKHH2C.4o/9IBvuHPBOvT4shj3zhQbwcjVPPW5g.fGtBL.', '2024-03-12', NULL, 'Yeeeeeoooooo');
 
 --
 -- Indexes for dumped tables
@@ -186,7 +187,7 @@ ALTER TABLE `Threads`
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --

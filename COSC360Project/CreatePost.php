@@ -17,20 +17,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $img_content = file_get_contents($_FILES['image']['tmp_name']);
         $img_username = $_SESSION['username'];
 
-        $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile, UserId) VALUES (:username, :img_content, :user_id)");
-        $stmt_img->execute(['username' => $img_username, 'img_content' => $img_content, 'user_id' => $user_id]);
-        $img_id = $pdo->lastInsertId();
+        try {
+            $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile, UserId) VALUES (?, ?, ?)");
+            $stmt_img->execute([$img_username, $img_content, $user_id]);
+            $img_id = $pdo->lastInsertId();
+        } catch (PDOException $e) {
+            echo "Error inserting image: " . $e->getMessage();
+            exit();
+        }
     } else {
         $img_id = null;
     }
 
-    $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Tags, Content, UserId, ImageId) VALUES (:title, :tags, :content, :user_id, :image_id)");
-    $stmt_thread->execute(['title' => $_POST['postTitle'], 'tags' => $tags, 'content' => $post_content, 'user_id' => $user_id, 'image_id' => $img_id]);
-
-    header("Location: home_Page.php");
-    exit();
+    try {
+        $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Tags, Content, UserId, ImageId) VALUES (?, ?, ?, ?, ?)");
+        $stmt_thread->execute([$_POST['postTitle'], $tags, $post_content, $user_id, $img_id]);
+        header("Location: home_Page.php");
+        exit();
+    } catch (PDOException $e) {
+        echo "Error inserting thread: " . $e->getMessage();
+        exit();
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Create a Post</h1>
     </header>
     <main>
-        <form method="post" enctype="multipart/form-data"> 
+      <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>
