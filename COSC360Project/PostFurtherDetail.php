@@ -58,7 +58,7 @@ if (isset($_GET['threadId'])) {
                     <a href="home_Page.php">
                         <img src="Logo.png" alt="Logo">
                     </a>
-                    <a href="login.php">
+                    <a href="AccountOverview.php">
                         <img src="UserImage.jpeg" alt="User Image Logo Button" id="user-image-logo-button">
                     </a>
                 </header>
