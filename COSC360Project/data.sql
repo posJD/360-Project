@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 24, 2024 at 12:50 AM
+-- Generation Time: Mar 27, 2024 at 06:13 AM
 -- Server version: 5.5.68-MariaDB
 -- PHP Version: 7.4.33
 
@@ -72,18 +72,9 @@ INSERT INTO `Comments` (`CommentId`, `ThreadId`, `Username`, `Content`, `Time`) 
 
 CREATE TABLE IF NOT EXISTS `Images` (
   `ImageId` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `ImgFile` blob NOT NULL
+  `ImgFile` blob NOT NULL,
+  `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `Images`
---
-
-INSERT INTO `Images` (`ImageId`, `Username`, `ImgFile`) VALUES
-(1, 'prithvi', 0x64617461),
-(2, 'sina', 0x64617461),
-(3, 'programming', 0x64617461);
 
 -- --------------------------------------------------------
 
@@ -100,15 +91,6 @@ CREATE TABLE IF NOT EXISTS `Threads` (
   `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ImageId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `Threads`
---
-
-INSERT INTO `Threads` (`ThreadId`, `Title`, `Tags`, `Content`, `UserId`, `Time`, `ImageId`) VALUES
-(1, 'Programming Like a Pro', 'programming', 'Programming at a professional level involves crafting efficient, maintainable code to solve complex problems. It requires a deep understanding of both the language and the problem domain, as well as a commitment to best practices and continuous learning.', 1, '2024-03-20 22:17:04', 3),
-(2, 'Food Travels', 'food', ' Food travels at a professional level go beyond mere indulgence—they are a celebration of diversity, a bridge between cultures, and a testament to the universal language of taste that unites us all. ', 1, '2024-03-20 22:17:14', 4),
-(3, 'Pets Care', 'pets', 'Professional pet care is a thoughtful blend of compassion and expertise, ensuring the well-being and happiness of our furry companions. It involves nurturing relationships built on trust, providing quality nutrition, exercise, and medical attention tailored to each pet''s unique needs.', 2, '2024-03-20 22:18:19', 5);
 
 -- --------------------------------------------------------
 
@@ -156,7 +138,8 @@ ALTER TABLE `Comments`
 -- Indexes for table `Images`
 --
 ALTER TABLE `Images`
-  ADD PRIMARY KEY (`ImageId`);
+  ADD PRIMARY KEY (`ImageId`),
+  ADD KEY `fk_Images_UserId` (`UserId`);
 
 --
 -- Indexes for table `Threads`
@@ -164,14 +147,16 @@ ALTER TABLE `Images`
 ALTER TABLE `Threads`
   ADD PRIMARY KEY (`ThreadId`),
   ADD UNIQUE KEY `ThreadId` (`ThreadId`),
-  ADD KEY `UserId` (`UserId`);
+  ADD KEY `fk_Threads_UserId` (`UserId`),
+  ADD KEY `fk_Threads_ImageId` (`ImageId`);
 
 --
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
   ADD PRIMARY KEY (`UserId`),
-  ADD UNIQUE KEY `Username` (`Username`);
+  ADD UNIQUE KEY `Username` (`Username`),
+  ADD KEY `idx_UserId` (`UserId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -207,9 +192,17 @@ ALTER TABLE `User`
 --
 
 --
+-- Constraints for table `Images`
+--
+ALTER TABLE `Images`
+  ADD CONSTRAINT `fk_Images_UserId` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`);
+
+--
 -- Constraints for table `Threads`
 --
 ALTER TABLE `Threads`
+  ADD CONSTRAINT `fk_Threads_UserId` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`),
+  ADD CONSTRAINT `fk_Threads_ImageId` FOREIGN KEY (`ImageId`) REFERENCES `Images` (`ImageId`),
   ADD CONSTRAINT `Threads_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

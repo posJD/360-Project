@@ -5,7 +5,6 @@ $dbname = 'db_86043593';
 $username = '86043593';
 $password = '86043593';
 
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     
@@ -14,30 +13,47 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username");
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-   
-    if ($user && password_verify($password, $user['Password'])) {
-        session_start();
-        $_SESSION['user_id'] = $user['UserId'];
-        $_SESSION['username'] = $user['Username'];
+    if(isset($_POST['admin_login'])) {
+        $admin_username = $_POST['admin_username'];
+        $admin_password = $_POST['admin_password'];
         
-        header("Location: home_Page.php");
-        exit();
+        $stmt = $pdo->prepare("SELECT * FROM Admin WHERE Username = :username");
+        $stmt->execute(['username' => $admin_username]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($admin && password_verify($admin_password, $admin['Password'])) {
+            session_start();
+            $_SESSION['admin_id'] = $admin['AdminId'];
+            $_SESSION['admin_username'] = $admin['Username'];
+            // Redirect to admin page or provide admin privileges
+            header("Location: admin_page.php");
+            exit();
+        } else {
+            $admin_error_message = "Invalid admin username or password.";
+        }
     } else {
-       
-        $error_message = "Invalid username or password.";
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username");
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['Password'])) {
+            session_start();
+            $_SESSION['user_id'] = $user['UserId'];
+            $_SESSION['username'] = $user['Username'];
+            
+            header("Location: home_Page.php");
+            exit();
+        } else {
+            $error_message = "Invalid username or password.";
+        }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
-        body {
+ body {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,15 +138,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         #logo {
             max-height: 60px;
             padding: 10px 40px;
+            position: absolute;
+            top: 10px; 
+            left: 10px; 
+            z-index: 999; 
         }
+
     </style>
 </head>
 <body>
-    <header>
-    <a href="home_Page.php">
-            <img src="Logo.png" alt="Logo">
-        </a>
-    </header>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <h2>Login</h2>
         <?php if(isset($error_message)) { ?>
@@ -147,8 +163,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button id="createAccountBtn" onclick="window.open('create_account.html', '_blank')">Create Account</button>
         <a href="forgot_password.html" id="forgot_PasswordLink" target="_blank">Forgot Password?</a>
     </form>
-    <footer>
-        &copy; 2024 DS CSS. All rights reserved.
-    </footer>
+    
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <h2>Admin Login</h2>
+        <?php if(isset($admin_error_message)) { ?>
+            <div><?php echo $admin_error_message; ?></div>
+        <?php } ?>
+        <label for="admin_username">Username:</label>
+        <input type="text" id="admin_username" name="admin_username" required>
+
+        <label for="admin_password">Password:</label>
+        <input type="password" id="admin_password" name="admin_password" required>
+
+        <button type="submit" name="admin_login">Admin Login</button>
+    </form>
 </body>
 </html>

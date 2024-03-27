@@ -3,6 +3,12 @@ require 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+session_start();
+
+if (!isset($_SESSION['admin_id'])) {
+    echo "This page is for admins only.";
+    exit;
+}
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -157,10 +163,9 @@ try {
         </table>
 
         <h2>Edit/Remove Posts</h2>
-        
     </main>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.
-    </footer> 
+    </footer>
 </body>
 </html>
