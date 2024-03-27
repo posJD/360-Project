@@ -58,6 +58,13 @@
             cursor: pointer;
         }
 
+        .user-image-button {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%
+            margin-left: 10px;
+        }
+
         main {
             padding: 20px;
         }
@@ -108,13 +115,14 @@
         <nav>
 
             <a href="CreatePost.php">New Post</a>
+            <a href="Admin.php">Admin</a>
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search by tag...">
                 <button onclick="searchByTag()">Search</button>
             </div>
             <a href="create_account.php" id="create_account">Create Account</a>
             <a href="login.php" id="login">login</a>
-            <a href="account_overview.php">
+            <a href="AccountOverview.php">
             <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
         </a>
         </nav>

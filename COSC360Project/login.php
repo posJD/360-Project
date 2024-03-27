@@ -138,14 +138,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             max-height: 60px;
             padding: 10px 40px;
             position: absolute;
-            top: 10px; 
-            left: 10px; 
-            z-index: 999; 
+            top: 10px;
+            left: 10px;
+            z-index: 999;
         }
 
     </style>
 </head>
 <body>
+    <header>
+        <a href="home_Page.php"><img src="logo.png" alt="Logo" id="logo"></a>
+    </header>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <h2>Login</h2>
         <?php if(isset($error_message)) { ?>
