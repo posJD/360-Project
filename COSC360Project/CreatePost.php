@@ -42,10 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <!-- Your header content here -->
+    <a href="home_Page.php">
+            <img src="Logo.png" alt="Logo" id="logo">
+        </a>
+        <a href="login.php">
+            <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
+        </a>
+        <h1>Create a Post</h1>
     </header>
     <main>
-        <form method="post" enctype="multipart/form-data"> <!-- Updated enctype for file upload -->
+        <form method="post" enctype="multipart/form-data"> 
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>
@@ -54,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <div id="imageContainer">
                 <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*"> <!-- Input for image upload -->
+                <input type="file" id="image" name="image" accept="image/*"> 
             </div>
             <br>
             <label for="tags">Tags:</label>

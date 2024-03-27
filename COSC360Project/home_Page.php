@@ -105,22 +105,18 @@
     <header>
 
         <img src="Logo.png" alt="Logo" id="logo">
-
-
-
-
         <nav>
 
-        
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="CreatePost.php">New Post</a>
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search by tag...">
                 <button onclick="searchByTag()">Search</button>
             </div>
-            <a href="create_account.php" id="create_account" target="_blank">Create Account</a>
-            <a href="login.php" id="login" target="_blank">Logout</a>
-            <button class="help-button">Help</button>
+            <a href="create_account.php" id="create_account">Create Account</a>
+            <a href="login.php" id="login">login</a>
+            <a href="account_overview.php">
+            <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+        </a>
         </nav>
     </header>
 
