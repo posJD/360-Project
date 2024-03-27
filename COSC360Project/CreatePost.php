@@ -17,14 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $img_content = file_get_contents($_FILES['image']['tmp_name']);
         $img_username = $_SESSION['username'];
 
-
-        $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile) VALUES (:username, :img_content)");
-        $stmt_img->execute(['username' => $img_username, 'img_content' => $img_content]);
+        $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile, UserId) VALUES (:username, :img_content, :user_id)");
+        $stmt_img->execute(['username' => $img_username, 'img_content' => $img_content, 'user_id' => $user_id]);
         $img_id = $pdo->lastInsertId();
     } else {
         $img_id = null;
     }
-
 
     $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Tags, Content, UserId, ImageId) VALUES (:title, :tags, :content, :user_id, :image_id)");
     $stmt_thread->execute(['title' => $_POST['postTitle'], 'tags' => $tags, 'content' => $post_content, 'user_id' => $user_id, 'image_id' => $img_id]);
@@ -33,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,16 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <a href="home_Page.php">
-            <img src="Logo.png" alt="Logo" id="logo">
-        </a>
-        <a href="login.php">
-            <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
-        </a>
-        <h1>Create a Post</h1>
+        <!-- Your header content here -->
     </header>
     <main>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data"> <!-- Updated enctype for file upload -->
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>
@@ -63,9 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <div id="imageContainer">
                 <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage()">
-                <button type="button" class="deleteImageButton" onclick="deleteImage()">X</button>
-                <div id="imagePreview"></div>
+                <input type="file" id="image" name="image" accept="image/*"> <!-- Input for image upload -->
             </div>
             <br>
             <label for="tags">Tags:</label>
@@ -81,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         &copy; 2024 DS CSS. All rights reserved.
     </footer>
 
+  
     <script>
         function previewImage() {
             var input = document.getElementById('image');
@@ -130,6 +120,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
-
 </body>
 </html>

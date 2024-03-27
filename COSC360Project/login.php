@@ -22,12 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute(['username' => $admin_username]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($admin && password_verify($admin_password, $admin['Password'])) {
+        if ($admin && $admin['Password'] === $admin_password) {
             session_start();
             $_SESSION['admin_id'] = $admin['AdminId'];
             $_SESSION['admin_username'] = $admin['Username'];
-            // Redirect to admin page or provide admin privileges
-            header("Location: admin_page.php");
+            header("Location: admin.php");
             exit();
         } else {
             $admin_error_message = "Invalid admin username or password.";
@@ -173,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="admin_username" name="admin_username" required>
 
         <label for="admin_password">Password:</label>
-        <input type="password" id="admin_password" name="admin_password" required>
+        <input type="text" id="admin_password" name="admin_password" required>
 
         <button type="submit" name="admin_login">Admin Login</button>
     </form>
