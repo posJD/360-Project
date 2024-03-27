@@ -11,7 +11,7 @@ include 'config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];
     $post_content = $_POST['postContent'];
-    $tags = $_POST['tags'];
+    $tags = isset($_POST['tags']) ? $_POST['tags'] : "";
 
     if ($_FILES['image']['size'] > 0) {
         $img_content = file_get_contents($_FILES['image']['tmp_name']);
@@ -30,8 +30,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Tags, Content, UserId, ImageId) VALUES (?, ?, ?, ?, ?)");
-        $stmt_thread->execute([$_POST['postTitle'], $tags, $post_content, $user_id, $img_id]);
+        $stmt_thread = $pdo->prepare("INSERT INTO Threads (Title, Content, UserId, ImageId) VALUES (?, ?, ?, ?)");
+        $stmt_thread->execute([$_POST['postTitle'], $post_content, $user_id, $img_id]);
+        $thread_id = $pdo->lastInsertId();
+
+        $tag_array = explode(",", $tags);
+        foreach ($tag_array as $tag) {
+            $tag = trim($tag);
+            if (!empty($tag)) {
+                $stmt_tag_check = $pdo->prepare("SELECT TagId FROM Tags WHERE TagName = ?");
+                $stmt_tag_check->execute([$tag]);
+                $existing_tag = $stmt_tag_check->fetchColumn();
+
+                if (!$existing_tag) {
+                    $stmt_insert_tag = $pdo->prepare("INSERT INTO Tags (TagName) VALUES (?)");
+                    $stmt_insert_tag->execute([$tag]);
+                    $tag_id = $pdo->lastInsertId();
+                } else {
+                    $tag_id = $existing_tag;
+                }
+                $stmt_thread_tag = $pdo->prepare("INSERT INTO ThreadTag (ThreadId, TagId) VALUES (?, ?)");
+                $stmt_thread_tag->execute([$thread_id, $tag_id]);
+            }
+        }
+
         header("Location: home_Page.php");
         exit();
     } catch (PDOException $e) {
@@ -40,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -52,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-    <a href="home_Page.php">
+        <a href="home_Page.php">
             <img src="Logo.png" alt="Logo" id="logo">
         </a>
         <a href="AccountOverview.php">
@@ -61,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Create a Post</h1>
     </header>
     <main>
-      <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <label for="postTitle">Title:</label>
             <input type="text" id="postTitle" name="postTitle" required>
             <br>
@@ -73,20 +96,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="file" id="image" name="image" accept="image/*"> 
             </div>
             <br>
-            <label for="tags">Tags:</label>
+            <label for="tags">Tags (Separate by commas):</label>
             <div id="tagList"></div>
             <input type="text" id="tags" name="tags">
             <br>
             <button type="button" onclick="addTag()">Add Tag</button>
             <button type="submit">Submit Post</button>
         </form>
-
     </main>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.
     </footer>
 
-  
     <script>
         function previewImage() {
             var input = document.getElementById('image');
@@ -138,3 +159,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 </body>
 </html>
+

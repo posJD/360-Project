@@ -163,6 +163,7 @@ try {
         </table>
 
         <h2>Edit/Remove Posts</h2>
+        
     </main>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.

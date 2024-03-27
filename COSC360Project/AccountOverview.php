@@ -26,28 +26,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = $_POST['username'];
         $dob = $_POST['dob'];
         $bio = $_POST['bio'];
-
+    
         $updateStmt = $pdo->prepare("UPDATE User SET Name = :name, Email = :email, Username = :username, DOB = :dob, Bio = :bio WHERE UserId = :user_id");
         $updateStmt->execute(['name' => $name, 'email' => $email, 'username' => $username, 'dob' => $dob, 'bio' => $bio, 'user_id' => $user_id]);
-
+    
         header("Location: AccountOverview.php");
         exit();
-        
     } elseif (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
         $file = $_FILES['profile_image'];
         $fileName = $file['name'];
         $tmpName = $file['tmp_name'];
         $fileSize = $file['size'];
         $fileError = $file['error'];
-
+    
         if ($fileError == UPLOAD_ERR_OK) {
             $targetDir = "uploads/";
             $targetFile = $targetDir . basename($fileName);
-
+    
             if (move_uploaded_file($tmpName, $targetFile)) {
                 $updateImageStmt = $pdo->prepare("UPDATE User SET ImageId = :image_id WHERE UserId = :user_id");
                 $updateImageStmt->execute(['image_id' => $targetFile, 'user_id' => $user_id]);
-
+    
                 header("Location: AccountOverview.php");
                 exit();
             } else {
@@ -58,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+    
 ?>
 
 <!DOCTYPE html>
@@ -84,15 +84,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Profile</a>
-            <a href="#">Settings</a>
-        </nav>
         <a href="home_Page.php">
             <img src="Logo.png" alt="Logo">
         </a>
-        <a href="login.php">
+        <a href="AccountOverview.php">
             <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
         </a>
     </header>
