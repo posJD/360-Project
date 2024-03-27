@@ -1,5 +1,4 @@
 <?php
-
 include 'config.php';
 
 session_start();
@@ -35,13 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $img_content = file_get_contents($tmpName);
 
             try {
-                $stmt_img = $pdo->prepare("UPDATE User SET ImageId = ? WHERE UserId = ?");
-                $stmt_img->execute([$img_content, $user_id]);
+                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile) VALUES (?)");
+                $stmt_img->bindParam(1, $img_content, PDO::PARAM_LOB);
+                $stmt_img->execute();
+
+                $image_id = $pdo->lastInsertId();
+
+                $updateImageStmt = $pdo->prepare("UPDATE User SET ImageId = ? WHERE UserId = ?");
+                $updateImageStmt->execute([$image_id, $user_id]);
 
                 header("Location: AccountOverview.php");
                 exit();
             } catch (PDOException $e) {
-                echo "Error updating image: " . $e->getMessage();
+                echo "Error uploading image: " . $e->getMessage();
                 exit();
             }
         } else {
@@ -58,7 +63,6 @@ if (!$user) {
     echo "Error: User data not found.";
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -75,12 +79,12 @@ if (!$user) {
             <img src="Logo.png" alt="Logo">
         </a>
         <a href="AccountOverview.php">
-            <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+            <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
         </a>
     </header>
     <main>
         <div class="profile-container">
-            <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="Profile Image" class="profile-image">
+            <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="Profile Image" class="profile-image">
             <div class="user-info">
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                     <h2>Name:
@@ -99,18 +103,4 @@ if (!$user) {
                         <textarea name="bio"><?php echo htmlspecialchars($user['Bio']); ?></textarea>
                     </p>
                     <p>
-                        <input type="file" name="profile_image">
-                        <button type="submit" name="update_image">Update Image</button>
-                    </p>
-                    <p>
-                        <button type="submit" name="update_profile">Update Profile</button>
-                    </p>
-                </form>
-            </div>
-        </div>
-    </main>
-    <footer>
-        &copy; 2024 DS CSS. All rights reserved.
-    </footer>
-</body>
-</html>
+                        <input type
