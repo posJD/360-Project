@@ -150,11 +150,12 @@
         if ($result->num_rows > 0) {
             
             while ($row = $result->fetch_assoc()) {
-                echo '<div class="discussion" data-tags="' . $row["Tags"] . '">';
+                echo '<div class="discussion" data-tags="' . $row["Tags"] . '" data-thread-id="' . $row["ThreadId"] . '">';
                 echo '<h2>' . $row["Title"] . '</h2>';
                 echo '<p>' . $row["Content"] . '</p>';
                 echo '</div>';
             }
+            
         } else {
             echo "No discussions found.";
         }
@@ -206,6 +207,16 @@
                 discussionContainer.innerHTML += discussionHTML;
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var discussions = document.querySelectorAll('.discussion');
+        discussions.forEach(function (discussion) {
+            discussion.addEventListener('click', function () {
+                var threadId = discussion.getAttribute('data-thread-id');
+                window.location.href = 'PostFurtherDetail.php?threadId=' + threadId;
+            });
+        });
+    });
     </script>
 </body>
 

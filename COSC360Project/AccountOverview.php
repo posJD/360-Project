@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $updateImageStmt = $pdo->prepare("UPDATE User SET ImageId = :image_id WHERE UserId = :user_id");
                 $updateImageStmt->execute(['image_id' => $targetFile, 'user_id' => $user_id]);
 
-                header("Location: account_overview.php");
+                header("Location: AccountOverview.php");
                 exit();
             } else {
                 echo "Error uploading image.";
