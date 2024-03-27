@@ -101,10 +101,11 @@ if (isset($_GET['threadId'])) {
                         <div class="comment-form">
                             <h3>Post a Comment</h3>
                             <?php if (isset($_SESSION['username'])) : ?>
-                                <form method="POST" action="PostFurtherDetail.php?threadId=<?php echo $threadId; ?>">
+                                <form id="commentForm" method="POST">
                                     <textarea name="comment" rows="4" required></textarea>
                                     <button type="submit">Post Comment</button>
                                 </form>
+
                             <?php else : ?>
                                 <p>Please <a href="login.php">login</a> to comment.</p>
                             <?php endif; ?>
@@ -114,6 +115,29 @@ if (isset($_GET['threadId'])) {
                         &copy; 2024 DS CSS. All rights reserved.
                     </footer>
                 </main>
+
+                <script>
+                    document.getElementById("commentForm").addEventListener("submit", function(event) {
+                        event.preventDefault(); 
+                        
+                        var formData = new FormData(this); 
+                    
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "PostFurtherDetail.php?threadId=<?php echo $threadId; ?>", true);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                window.location.reload();
+                            } else {
+                                console.error("Error submitting comment:", xhr.statusText);
+                            }
+                        };
+                        xhr.onerror = function() {
+                            console.error("Error submitting comment.");
+                        };
+                        xhr.send(formData);
+                    });
+                </script>
+
                 </body>
             </html>
             <?php

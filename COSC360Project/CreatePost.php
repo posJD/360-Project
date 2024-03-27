@@ -18,8 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $img_username = $_SESSION['username'];
 
         try {
-            $stmt_img = $pdo->prepare("INSERT INTO Images (Username, ImgFile, UserId) VALUES (?, ?, ?)");
-            $stmt_img->execute([$img_username, $img_content, $user_id]);
+            $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile, UserId) VALUES (?, ?)");
+            $stmt_img->execute([$img_content, $user_id]);
             $img_id = $pdo->lastInsertId();
         } catch (PDOException $e) {
             echo "Error inserting image: " . $e->getMessage();
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a href="home_Page.php">
             <img src="Logo.png" alt="Logo" id="logo">
         </a>
-        <a href="login.php">
+        <a href="AccountOverview.php">
             <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
         </a>
         <h1>Create a Post</h1>
