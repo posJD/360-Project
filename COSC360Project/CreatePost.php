@@ -78,10 +78,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="home_Page.php">
             <img src="Logo.png" alt="Logo" id="logo">
         </a>
+        <h1>Create a Post</h1>
         <a href="AccountOverview.php">
             <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
         </a>
-        <h1>Create a Post</h1>
     </header>
     <main>
         <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">

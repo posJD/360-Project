@@ -163,7 +163,9 @@ try {
 </head>
 <body>
     <header>
-        <a href="home_Page.php"><img src="Logo.png" alt="Logo"></a>
+        <a href="home_Page.php">
+            <img src="Logo.png" alt="Logo" id="logo">
+        </a>
         <h1>Admin Page</h1>
         <button onclick="window.location.href = 'login.php'">Login</button>
     </header>
