@@ -14,8 +14,6 @@ $user_id = $_SESSION['user_id'];
 $stmt = $pdo->prepare("SELECT * FROM User WHERE UserId = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$pdo = null;
 ?>
 
 <!DOCTYPE html>
@@ -225,5 +223,5 @@ $pdo = null;
     });
     </script>
 </body>
-
 </html>
+
