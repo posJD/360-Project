@@ -14,7 +14,7 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])) {
             echo $imageData['ImgFile'];
             exit();
         } else {
-            header("Location: defaultImage.jpeg");
+            header("Location: UserImage.jpeg");
             exit();
         }
     } catch (PDOException $e) {
@@ -22,7 +22,7 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])) {
         exit();
     }
 } else {
-    header("Location: defaultImage.jpeg");
+    header("Location: UserImage.jpeg");
     exit();
 }
 ?>
