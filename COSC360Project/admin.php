@@ -14,11 +14,9 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    $stmt = $pdo->query("SELECT * FROM User");
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, UserId, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, Username AS UserId, Time FROM Comments ORDER BY Time DESC");
+    $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->query("SELECT * FROM Threads ORDER BY Time DESC");
-    $threads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
@@ -175,24 +173,23 @@ try {
         <label for="searchUser">Search by Name, Email, or Post:</label>
         <input type="text" id="searchUser" placeholder="Enter search keyword...">
 
-        <h2>Search Results</h2>
+        <h2>Recent Activity</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>User Actions</th>
+                    <th>Type</th>
+                    <th>Content</th>
+                    <th>User</th>
+                    <th>Time</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($activities as $activity): ?>
                 <tr>
-                    <td><?php echo $user['Name']; ?></td>
-                    <td><?php echo $user['Email']; ?></td>
-                    <td class="user-actions">
-                        <button class="enable-btn action-btn">Enable</button>
-                        <button class="disable-btn action-btn">Disable</button>
-                    </td>
+                    <td><?php echo ucfirst($activity['type']); ?></td>
+                    <td><?php echo $activity['content']; ?></td>
+                    <td><?php echo $activity['UserId']; ?></td>
+                    <td><?php echo $activity['Time']; ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
