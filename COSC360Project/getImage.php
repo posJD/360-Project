@@ -10,7 +10,7 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])) {
         $imageData = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($imageData && isset($imageData['ImgFile'])) {
-            header("Content-type: image/jpeg"); // Adjust the content type based on your image type
+            header("Content-type: image/jpeg");
             echo $imageData['ImgFile'];
             exit();
         } else {
