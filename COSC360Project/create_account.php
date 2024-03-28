@@ -130,8 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-<header>
-        <img src="Logo.png" alt="Logo" id="logo">
+    <header>
+        <a href="home_Page.php"><img src="Logo.png" alt="Logo" id="logo"></a>
     </header>
     <form id="createAccountForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <h2>Create Account</h2>

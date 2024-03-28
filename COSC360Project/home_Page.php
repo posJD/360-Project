@@ -129,24 +129,27 @@ $pdo = null;
 </head>
 
 <body>
-    <header>
+<header>
+    <img src="Logo.png" alt="Logo" id="logo">
+    <nav>
+        <a href="CreatePost.php">New Post</a>
+        <a href="Admin.php">Admin</a>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search by tag...">
+            <button onclick="searchByTag()">Search</button>
+        </div>
+        <?php if(isset($_SESSION['user_id'])) : ?>
+            <a href="logout.php">Logout</a>
+        <?php else : ?>
+            <a href="create_account.php" id="create_account">Create Account</a>
+            <a href="login.php" id="login">Login</a>
+        <?php endif; ?>
+        <a href="AccountOverview.php">
+            <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+        </a>
+    </nav>
+</header>
 
-        <img src="Logo.png" alt="Logo" id="logo">
-        <nav>
-
-            <a href="CreatePost.php">New Post</a>
-            <a href="Admin.php">Admin</a>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search by tag...">
-                <button onclick="searchByTag()">Search</button>
-            </div>
-            <a  href="create_account.php" id="create_account">Create Account</a>
-            <a  href="login.php" id="login">Login</a>
-            <a  href="AccountOverview.php">
-                <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
-            </a>
-        </nav>
-    </header>
 
 
     <main id="discussionContainer">
