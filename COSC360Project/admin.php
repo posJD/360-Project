@@ -13,8 +13,11 @@ if (!isset($_SESSION['admin_id'])) {
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->query("SELECT * FROM User");
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, UserId, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, Username AS UserId, Time FROM Comments ORDER BY Time DESC");
+    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, Username AS user, Time FROM Comments ORDER BY Time DESC");
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch(PDOException $e) {
@@ -169,9 +172,29 @@ try {
     </header>
 
     <main>
-        <h2>Search for User</h2>
-        <label for="searchUser">Search by Name, Email, or Post:</label>
-        <input type="text" id="searchUser" placeholder="Enter search keyword...">
+        <h2>All Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                <tr>
+                    <td><?php echo $user['Name']; ?></td>
+                    <td><?php echo $user['Email']; ?></td>
+                    <td><?php echo $user['Username']; ?></td>
+                    <td class="user-actions">
+                        <button class="enable-btn action-btn">Enable</button>
+                        <button class="disable-btn action-btn">Disable</button>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
         <h2>Recent Activity</h2>
         <table>
@@ -188,32 +211,8 @@ try {
                 <tr>
                     <td><?php echo ucfirst($activity['type']); ?></td>
                     <td><?php echo $activity['content']; ?></td>
-                    <td><?php echo $activity['UserId']; ?></td>
+                    <td><?php echo $activity['user']; ?></td>
                     <td><?php echo $activity['Time']; ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <h2>Edit/Remove Posts</h2>
-
-        <h2>All Threads (Sorted by Most Recent)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Content</th>
-                    <th>User</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($threads as $thread): ?>
-                <tr>
-                    <td><?php echo $thread['Title']; ?></td>
-                    <td><?php echo $thread['Content']; ?></td>
-                    <td><?php echo $thread['UserId']; ?></td>
-                    <td><?php echo $thread['Time']; ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
