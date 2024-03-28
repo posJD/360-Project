@@ -155,19 +155,9 @@ $pdo = null;
     <main id="discussionContainer">
         <?php
        
-        $servername ='localhost';
-        $dbname = 'db_86043593';
-        $username = '86043593';
-        $password = '86043593';
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
+       include 'config.php';
         
-        $sql = "SELECT * FROM Threads";
+        $sql = "SELECT * FROM Threads ORDER BY Time DESC";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
