@@ -2,18 +2,16 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
 include 'config.php';
 
-$user_id = $_SESSION['user_id'];
+$user = null; 
 
-$stmt = $pdo->prepare("SELECT * FROM User WHERE UserId = :user_id");
-$stmt->execute(['user_id' => $user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $stmt = $pdo->prepare("SELECT * FROM User WHERE UserId = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
