@@ -12,17 +12,6 @@ $user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update_profile'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $dob = $_POST['dob'];
-        $bio = $_POST['bio'];
-
-        $updateStmt = $pdo->prepare("UPDATE User SET Name = :name, Email = :email, Username = :username, DOB = :dob, Bio = :bio WHERE UserId = :user_id");
-        $updateStmt->execute(['name' => $name, 'email' => $email, 'username' => $username, 'dob' => $dob, 'bio' => $bio, 'user_id' => $user_id]);
-
-        header("Location: AccountOverview.php");
-        exit();
     } elseif (isset($_POST['update_image']) && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
         $file = $_FILES['profile_image'];
         $fileName = $file['name'];
@@ -34,8 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $img_content = file_get_contents($tmpName);
 
             try {
-                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile) VALUES (?)");
+                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile, UserId) VALUES (?, ?)");
                 $stmt_img->bindParam(1, $img_content, PDO::PARAM_LOB);
+                $stmt_img->bindParam(2, $user_id, PDO::PARAM_INT);
                 $stmt_img->execute();
 
                 $image_id = $pdo->lastInsertId();
