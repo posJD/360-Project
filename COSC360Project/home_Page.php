@@ -153,29 +153,22 @@ $pdo = null;
 
 
     <main id="discussionContainer">
-        <?php
-       
-       include 'config.php';
-        
+    <?php
         $sql = "SELECT * FROM Threads ORDER BY Time DESC";
-        $result = $conn->query($sql);
+        $stmt = $pdo->query($sql);
 
-        if ($result->num_rows > 0) {
-            
-            while ($row = $result->fetch_assoc()) {
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '<div class="discussion" data-tags="' . $row["Tags"] . '" data-thread-id="' . $row["ThreadId"] . '">';
                 echo '<h2>' . $row["Title"] . '</h2>';
                 echo '<p>' . $row["Content"] . '</p>';
                 echo '</div>';
             }
-            
         } else {
             echo "No discussions found.";
         }
-
-       
-        $conn->close();
         ?>
+    </main>
     </main>
 
     <footer>
