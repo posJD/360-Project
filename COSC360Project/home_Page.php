@@ -1,3 +1,29 @@
+
+In the provided HTML code, the $user['ImageId'] variable is being used to determine whether to display the user's image or a default image. However, in this HTML file, there is no PHP code that retrieves the user's information from the database and assigns it to the $user variable.
+
+To retrieve the user's information and use their ImageId, you need to include PHP code at the beginning of the file to fetch the user's data from the database. Here's how you can modify the code to include the necessary PHP code:
+
+php
+Copy code
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include 'config.php';
+
+$user_id = $_SESSION['user_id'];
+
+$stmt = $pdo->prepare("SELECT * FROM User WHERE UserId = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$pdo = null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
