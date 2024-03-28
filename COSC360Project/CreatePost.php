@@ -79,8 +79,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="Logo.png" alt="Logo" id="logo">
         </a>
         <h1>Create a Post</h1>
-        <a href="AccountOverview.php">
-            <img src="UserImage.jpeg" alt="User Image" class="user-image-button">
+
+        <?php
+        $user_id = $_SESSION['user_id'];
+        $stmt = $pdo->prepare("SELECT ImageId FROM User WHERE UserId = ?");
+        $stmt->execute([$user_id]);
+        $user_image = $stmt->fetchColumn();
+        ?>
+
+         <a href="AccountOverview.php">
+            <img src="<?php echo $user_image ? 'getImage.php?id='.$user_image : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
         </a>
     </header>
     <main>
