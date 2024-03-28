@@ -59,8 +59,8 @@ if (isset($_GET['threadId'])) {
                         <img src="Logo.png" alt="Logo">
                     </a>
                     <a href="AccountOverview.php">
-                        <img src="UserImage.jpeg" alt="User Image Logo Button" id="user-image-logo-button">
-                    </a>
+                        <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+                     </a>
                 </header>
                 <main>
                     <div class="post-container">

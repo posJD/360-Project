@@ -12,6 +12,19 @@ $user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update_profile'])) {
+        // Retrieve form data
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $username = $_POST['username'];
+        $dob = $_POST['dob'];
+        $bio = $_POST['bio'];
+    
+        $updateStmt = $pdo->prepare("UPDATE User SET Name = :name, Email = :email, Username = :username, DOB = :dob, Bio = :bio WHERE UserId = :user_id");
+        $updateStmt->execute(['name' => $name, 'email' => $email, 'username' => $username, 'dob' => $dob, 'bio' => $bio, 'user_id' => $user_id]);
+    
+        header("Location: AccountOverview.php");
+        exit();
+    
     } elseif (isset($_POST['update_image']) && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
         $file = $_FILES['profile_image'];
         $fileName = $file['name'];

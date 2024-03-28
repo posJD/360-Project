@@ -1,3 +1,23 @@
+
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include 'config.php';
+
+$user_id = $_SESSION['user_id'];
+
+$stmt = $pdo->prepare("SELECT * FROM User WHERE UserId = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$pdo = null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,11 +140,11 @@
                 <input type="text" id="searchInput" placeholder="Search by tag...">
                 <button onclick="searchByTag()">Search</button>
             </div>
-            <a href="create_account.php" id="create_account">Create Account</a>
-            <a href="login.php" id="login">Login</a>
-            <a href="AccountOverview.php">
-            <img src="<?php echo $user['ImageId'] ?? 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
-        </a>
+            <a  href="create_account.php" id="create_account">Create Account</a>
+            <a  href="login.php" id="login">Login</a>
+            <a  href="AccountOverview.php">
+                <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+            </a>
         </nav>
     </header>
 
