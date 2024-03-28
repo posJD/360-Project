@@ -58,9 +58,17 @@ if (isset($_GET['threadId'])) {
                     <a href="home_Page.php">
                         <img src="Logo.png" alt="Logo">
                     </a>
+
+                    <?php
+                    $user_id = $_SESSION['user_id'];
+                    $stmt = $pdo->prepare("SELECT ImageId FROM User WHERE UserId = ?");
+                    $stmt->execute([$user_id]);
+                    $user_image = $stmt->fetchColumn();
+                    ?>
+
                     <a href="AccountOverview.php">
-                        <img src="<?php echo $user['ImageId'] ? 'getImage.php?id='.$user['ImageId'] : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
-                     </a>
+                        <img src="<?php echo $user_image ? 'getImage.php?id='.$user_image : 'UserImage.jpeg'; ?>" alt="User Image" class="user-image-button">
+                    </a>
                 </header>
                 <main>
                     <div class="post-container">
