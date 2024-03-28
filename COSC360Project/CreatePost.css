@@ -23,16 +23,23 @@ header img {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); 
+    transform: translateY(-50%);
     right: 10px;
 }
 
 #logo {
-    max-width: 100px; 
+    max-width: 100px;
     position: absolute;
     top: 50%;
     left: 20px;
     transform: translateY(-50%);
+}
+
+h1 {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 main {

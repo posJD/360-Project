@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             preview.innerHTML = '';
         }
 
-        function addTag() {
+     /*   function addTag() {
             var tagInput = document.getElementById('tags');
             var tagList = document.getElementById('tagList');
 
@@ -156,6 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 tagInput.value = "";
             }
         }
+        /*
     </script>
 </body>
 </html>

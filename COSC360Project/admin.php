@@ -48,12 +48,22 @@ try {
             align-items: center;
         }
 
-        main {
-            padding: 20px;
+        #logo-link {
+            display: inline-block;
         }
 
-        h1, h2 {
-            margin-top: 0;
+        #logo {
+            max-height: 40px;
+            padding-right: 20px; 
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+
+        main {
+            padding: 20px;
         }
 
         label {
@@ -153,8 +163,9 @@ try {
 </head>
 <body>
     <header>
+        <a href="home_Page.php"><img src="Logo.png" alt="Logo"></a>
         <h1>Admin Page</h1>
-        <button onclick="window.open('login.php', '_blank')">Login</button>
+        <button onclick="window.location.href = 'login.php'">Login</button>
     </header>
 
     <main>
