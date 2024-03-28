@@ -1,10 +1,4 @@
 
-In the provided HTML code, the $user['ImageId'] variable is being used to determine whether to display the user's image or a default image. However, in this HTML file, there is no PHP code that retrieves the user's information from the database and assigns it to the $user variable.
-
-To retrieve the user's information and use their ImageId, you need to include PHP code at the beginning of the file to fetch the user's data from the database. Here's how you can modify the code to include the necessary PHP code:
-
-php
-Copy code
 <?php
 session_start();
 
