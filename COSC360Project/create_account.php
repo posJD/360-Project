@@ -1,5 +1,4 @@
 <?php
-
 $host = 'localhost';
 $dbname = 'db_86043593';
 $username = '86043593';
@@ -22,6 +21,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $dob = $_POST['dob'];
 
+    if ($_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
+        $file = $_FILES['profile_image'];
+        $fileName = $file['name'];
+        $tmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+
+        if ($fileError == UPLOAD_ERR_OK) {
+            $img_content = file_get_contents($tmpName);
+        } else {
+            echo "Error uploading image.";
+            exit();
+        }
+    }
+
     $stmt = $pdo->prepare("SELECT * FROM User WHERE Email = :email");
     $stmt->execute(['email' => $email]);
     $existingEmail = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -42,8 +56,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("INSERT INTO User (Name, Email, Username, Password, DOB) VALUES (:name, :email, :username, :password, :dob)");
-            $stmt->execute(['name' => "$firstName $lastName", 'email' => $email, 'username' => $username, 'password' => $hashedPassword, 'dob' => $dob]);
+            $stmt = $pdo->prepare("INSERT INTO User (Name, Email, Username, Password, DOB, ImageId) VALUES (:name, :email, :username, :password, :dob, NULL)");
+            $stmt->bindParam(':name', "$firstName $lastName");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':dob', $dob);
+            $stmt->execute();
+
+            $user_id = $pdo->lastInsertId();
+            try {
+                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile, UserId) VALUES (?, ?)");
+                $stmt_img->bindParam(1, $img_content, PDO::PARAM_LOB);
+                $stmt_img->bindParam(2, $user_id, PDO::PARAM_INT);
+                $stmt_img->execute();
+
+                      $image_id = $pdo->lastInsertId();
+
+                      $updateImageStmt = $pdo->prepare("UPDATE User SET ImageId = ? WHERE UserId = ?");
+                      $updateImageStmt->execute([$image_id, $user_id]);
+
+            } catch (PDOException $e) {
+                echo "Error uploading image: " . $e->getMessage();
+                exit();
+            }
 
             header("Location: login.php");
             exit();
@@ -152,6 +188,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" name="dob" required>
+
+        <input type="file" name="profile_image"> 
+        <button type="submit">Add Image</button>
 
         <button type="submit">Create Account</button>
     </form>

@@ -12,7 +12,6 @@ $user_id = $_SESSION['user_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update_profile'])) {
-        // Retrieve form data
         $name = $_POST['name'];
         $email = $_POST['email'];
         $username = $_POST['username'];

@@ -162,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <button type="submit">Login</button>
 
-        <button id="createAccountBtn" onclick="window.open('create_account.html', '_blank')">Create Account</button>
+        <button id="createAccountBtn" onclick="window.open('create_account.php', '_blank')">Create Account</button>
         <a href="forgot_password.html" id="forgot_PasswordLink" target="_blank">Forgot Password?</a>
     </form>
     
