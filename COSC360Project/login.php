@@ -1,9 +1,9 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'db_86043593';
-$username = '86043593';
-$password = '86043593';
+$dbname = 'dbtest';
+$username = 'root'; 
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username");
+        $stmt = $pdo->prepare("SELECT * FROM User WHERE Username = :username AND enabled = 1");
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -46,7 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             header("Location: home_Page.php");
             exit();
-        } else {
+        }  elseif ($user && $user['enabled'] == 0) {
+            $error_message = "Your account is disabled. Please contact the administrator.";}
+        else {
             $error_message = "Invalid username or password.";
         }
     }
@@ -162,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <button type="submit">Login</button>
 
-        <button id="createAccountBtn" onclick="window.open('create_account.php', '_blank')">Create Account</button>
+        <button id="createAccountBtn" onclick="window.open('create_account.html', '_blank')">Create Account</button>
         <a href="forgot_password.html" id="forgot_PasswordLink" target="_blank">Forgot Password?</a>
     </form>
     

@@ -17,6 +17,7 @@ try {
     $stmt = $pdo->query("SELECT * FROM User");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    
     $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, Username AS user, Time FROM Comments ORDER BY Time DESC");
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -49,27 +50,12 @@ try {
             align-items: center;
         }
 
-        #logo-link {
-            display: inline-block;
-        }
-
-        #logo {
-            max-height: 40px;
-            padding-right: 20px; 
-        }
-
-        h1 {
+        header h1 {
             margin: 0;
         }
 
-
         main {
             padding: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
         }
 
         input[type="text"] {
@@ -127,11 +113,6 @@ try {
             color: white;
         }
 
-        .edit-btn, .remove-btn {
-            background-color: #3498db;
-            color: white;
-        }
-
         footer {
             background-color: #2c3e50;
             color: white;
@@ -164,15 +145,15 @@ try {
 </head>
 <body>
     <header>
-        <a href="home_Page.php">
-            <img src="Logo.png" alt="Logo" id="logo">
-        </a>
         <h1>Admin Page</h1>
         <button onclick="window.location.href = 'login.php'">Login</button>
     </header>
 
     <main>
         <h2>All Users</h2>
+        <input type="text" id="searchInput" placeholder="Search by username...">
+        <button onclick="searchUsers()">Search</button>
+
         <table>
             <thead>
                 <tr>
@@ -181,16 +162,17 @@ try {
                     <th>Username</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="userTableBody">
                 <?php foreach ($users as $user): ?>
                 <tr>
                     <td><?php echo $user['Name']; ?></td>
                     <td><?php echo $user['Email']; ?></td>
                     <td><?php echo $user['Username']; ?></td>
                     <td class="user-actions">
-                        <button class="enable-btn action-btn">Enable</button>
-                        <button class="disable-btn action-btn">Disable</button>
-                    </td>
+    <button class="enable-btn action-btn" onclick="enableUser(<?php echo $user['UserId']; ?>)">Enable</button>
+    <button class="disable-btn action-btn" onclick="disableUser(<?php echo $user['UserId']; ?>)">Disable</button>
+</td>
+
                 </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -198,28 +180,54 @@ try {
 
         <h2>Recent Activity</h2>
         <table>
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Content</th>
-                    <th>User</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($activities as $activity): ?>
-                <tr>
-                    <td><?php echo ucfirst($activity['type']); ?></td>
-                    <td><?php echo $activity['content']; ?></td>
-                    <td><?php echo $activity['user']; ?></td>
-                    <td><?php echo $activity['Time']; ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
+            
         </table>
     </main>
+
     <footer>
         &copy; 2024 DS CSS. All rights reserved.
     </footer>
+
+    <script>
+        function searchUsers() {
+            var searchQuery = document.getElementById("searchInput").value.trim();
+            if (searchQuery !== "") {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("userTableBody").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", "search_users.php?username=" + searchQuery, true);
+                xhttp.send();
+            } else {
+                alert("Please enter a username to search.");
+            }
+        }
+
+        function enableUser(userId) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(this.responseText);
+                  
+                }
+            };
+            xhttp.open("GET", "enable_user.php?user_id=" + userId, true);
+            xhttp.send();
+        }
+
+        function disableUser(userId) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(this.responseText);
+                    
+                }
+            };
+            xhttp.open("GET", "disable_user.php?user_id=" + userId, true);
+            xhttp.send();
+        }
+    </script>
 </body>
 </html>
