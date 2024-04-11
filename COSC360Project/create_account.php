@@ -189,10 +189,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" name="dob" required>
 
-        <input type="file" name="profile_image"> 
-        <button type="submit">Add Image</button>
+        <label for="profile_image">Profile Image:</label>
+        <input type="file" id="profile_image" name="profile_image">
 
-        <button type="submit">Create Account</button>
+        <button type="submit" name="create_account">Create Account</button>
     </form>
     <footer>
         &copy; 2024 DS CSS. All rights reserved.
