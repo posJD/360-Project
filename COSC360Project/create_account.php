@@ -56,33 +56,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("INSERT INTO User (Name, Email, Username, Password, DOB, ImageId) VALUES (:name, :email, :username, :password, :dob, NULL)");
-            $stmt->bindParam(':name', "$firstName $lastName");
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $hashedPassword);
-            $stmt->bindParam(':dob', $dob);
-            $stmt->execute();
-
-            $user_id = $pdo->lastInsertId();
             try {
-                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile, UserId) VALUES (?, ?)");
+                $pdo->beginTransaction();
+
+                $stmt_img = $pdo->prepare("INSERT INTO Images (ImgFile) VALUES (?)");
                 $stmt_img->bindParam(1, $img_content, PDO::PARAM_LOB);
-                $stmt_img->bindParam(2, $user_id, PDO::PARAM_INT);
                 $stmt_img->execute();
+                $image_id = $pdo->lastInsertId();
 
-                      $image_id = $pdo->lastInsertId();
+                $stmt_user = $pdo->prepare("INSERT INTO User (Name, Email, Username, Password, DOB, ImageId) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt_user->execute(["$firstName $lastName", $email, $username, $hashedPassword, $dob, $image_id]);
 
-                      $updateImageStmt = $pdo->prepare("UPDATE User SET ImageId = ? WHERE UserId = ?");
-                      $updateImageStmt->execute([$image_id, $user_id]);
+                $pdo->commit();
 
+                header("Location: login.php");
+                exit();
             } catch (PDOException $e) {
-                echo "Error uploading image: " . $e->getMessage();
+                $pdo->rollBack();
+                echo "Error creating user: " . $e->getMessage();
                 exit();
             }
-
-            header("Location: login.php");
-            exit();
         }
     }
 }
