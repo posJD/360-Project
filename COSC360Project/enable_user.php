@@ -11,7 +11,7 @@ if (isset($_GET['user_id'])) {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         
-        $stmt = $pdo->prepare("UPDATE user SET enabled = 1 WHERE UserId = ?");
+        $stmt = $pdo->prepare("UPDATE User SET enabled = 1 WHERE UserId = ?");
         $stmt->execute([$userId]);
 
         

@@ -21,7 +21,10 @@ try {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     
-    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, username AS user, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, username AS user, Time FROM Comments ORDER BY Time DESC");
+    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads 
+    UNION ALL 
+    SELECT 'comment' AS type, Content AS content, username AS user, Time FROM Comments 
+    ORDER BY Time DESC");
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch(PDOException $e) {
