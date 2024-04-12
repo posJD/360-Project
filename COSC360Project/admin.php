@@ -1,5 +1,8 @@
 <?php
-require 'config.php'; 
+$host = 'localhost';
+$dbname = 'db_86043593';
+$username = '86043593';
+$password = '86043593';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -14,11 +17,11 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->query("SELECT * FROM User");
+    $stmt = $pdo->query("SELECT * FROM user");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     
-    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, Username AS user, Time FROM Comments ORDER BY Time DESC");
+    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, username AS user, Time FROM Threads UNION ALL SELECT 'comment' AS type, Content AS content, username AS user, Time FROM Comments ORDER BY Time DESC");
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch(PDOException $e) {
