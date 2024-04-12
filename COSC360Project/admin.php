@@ -17,7 +17,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->query("SELECT * FROM user");
+    $stmt = $pdo->query("SELECT * FROM User");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     
@@ -179,11 +179,26 @@ try {
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table>
-
-        <h2>Recent Activity</h2>
+            <h2>Recent Activity</h2>
         <table>
-            
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Content</th>
+                    <th>User</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($activities as $activity): ?>
+                <tr>
+                    <td><?php echo $activity['type']; ?></td>
+                    <td><?php echo $activity['content']; ?></td>
+                    <td><?php echo $activity['user']; ?></td>
+                    <td><?php echo $activity['Time']; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
     </main>
 
