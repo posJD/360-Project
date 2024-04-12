@@ -20,12 +20,15 @@ try {
     $stmt = $pdo->query("SELECT * FROM User");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    
-    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads 
+    $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Users.Username AS user, Time 
+    FROM Threads 
+    INNER JOIN User AS Users ON Threads.UserId = Users.UserId 
     UNION ALL 
-    SELECT 'comment' AS type, Content AS Content, Username AS user, Time FROM Comments 
+    SELECT 'comment' AS type, Content AS content, Comments.Username AS user, Time 
+    FROM Comments 
     ORDER BY Time DESC");
-    $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
