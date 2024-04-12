@@ -150,7 +150,13 @@ if (isset($_SESSION['user_id'])) {
 
     <main id="discussionContainer">
     <?php
-        $sql = "SELECT * FROM Threads ORDER BY Time DESC";
+       $sql = "SELECT t.ThreadId, t.Title, t.Content, GROUP_CONCAT(DISTINCT tg.TagName SEPARATOR ', ') AS Tags 
+       FROM Threads t
+       LEFT JOIN ThreadTag tt ON t.ThreadId = tt.ThreadId
+       LEFT JOIN Tags tg ON tt.TagId = tg.TagId
+       GROUP BY t.ThreadId
+       ORDER BY t.Time DESC";
+
         $stmt = $pdo->query($sql);
 
         if ($stmt->rowCount() > 0) {
