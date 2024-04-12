@@ -23,7 +23,7 @@ try {
     
     $stmt = $pdo->query("SELECT 'thread' AS type, Title AS content, Username AS user, Time FROM Threads 
     UNION ALL 
-    SELECT 'comment' AS type, Content AS content, username AS user, Time FROM Comments 
+    SELECT 'comment' AS type, Content AS Content, Username AS user, Time FROM Comments 
     ORDER BY Time DESC");
     $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
