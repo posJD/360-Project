@@ -28,6 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileSize = $file['size'];
         $fileError = $file['error'];
 
+        $img_content = file_get_contents($tmpName);
+    } else {
+      
+        $img_content = null; 
+    }
+
         if ($fileError == UPLOAD_ERR_OK) {
             $img_content = file_get_contents($tmpName);
         } else {
@@ -80,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -164,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header>
         <a href="home_Page.php"><img src="Logo.png" alt="Logo" id="logo"></a>
     </header>
-    <form id="createAccountForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <form id="createAccountForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
         <h2>Create Account</h2>
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" name="firstName" required>
